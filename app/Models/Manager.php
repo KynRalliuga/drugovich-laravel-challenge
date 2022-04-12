@@ -2,16 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use App\Enum\ManagerLevelEnum;
 
-class User extends Authenticatable
-{
-    use HasApiTokens, HasFactory, Notifiable;
-
+class Manager extends Model {
+    use HasFactory;
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +17,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'level',
+        'token_jwt',
     ];
 
     /**
@@ -30,7 +28,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -39,6 +36,19 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'level' => ManagerLevelEnum::class
     ];
+
+    public function findByToken($token){
+        return $this->where('token_jwt', $token)->first();
+    }
+
+    public function findByEmail($email){
+        return $this->where('email', $email)->first();
+    }
+
+    public function updateToken($token){
+        $this->token_jwt = $token;
+        return $this->save();
+    }
 }
