@@ -65,4 +65,10 @@ class CustomerController extends Controller
             'data' => Customer::with('group')->paginate(10)
         ], 200);
     }
+
+    public function getById($id){
+        return response()->json([
+            'data' => Customer::with('group')->find($id)
+        ], 200);
+    }
 }

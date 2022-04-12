@@ -26,12 +26,14 @@ Route::prefix('manager')->group(function () {
 Route::middleware(['auth.jwt'])->group(function () {
     Route::prefix('group')->controller(GroupController::class)->group(function () {
         Route::get('/', 'get');
+        Route::get('/{id}', 'getById');
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
     });
 
     Route::prefix('customer')->controller(CustomerController::class)->group(function () {
         Route::get('/', 'get');
+        Route::get('/{id}', 'getById');
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
     });

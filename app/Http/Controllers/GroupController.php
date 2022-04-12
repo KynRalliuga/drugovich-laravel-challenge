@@ -73,4 +73,10 @@ class GroupController extends Controller
             'data' => Group::paginate(10)
         ], 200);
     }
+
+    public function getById($id){
+        return response()->json([
+            'data' => Group::find($id)
+        ], 200);
+    }
 }
