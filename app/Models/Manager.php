@@ -51,4 +51,12 @@ class Manager extends Model {
         $this->token_jwt = $token;
         return $this->save();
     }
+
+    public function isLevel1(){
+        return $this->level === ManagerLevelEnum::LEVEL_1;
+    }
+
+    public function isLevel2(){
+        return $this->level === ManagerLevelEnum::LEVEL_2;
+    }
 }
