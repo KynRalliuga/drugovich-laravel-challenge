@@ -29,6 +29,7 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/{id}', 'getById');
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'delete');
     });
 
     Route::prefix('customer')->controller(CustomerController::class)->group(function () {
@@ -36,5 +37,8 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/{id}', 'getById');
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'delete');
+
+        Route::get('/group/{id}', 'getByGroup');
     });
 });

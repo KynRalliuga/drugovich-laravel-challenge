@@ -68,6 +68,21 @@ class GroupController extends Controller
         ], 202);
     }
 
+    public function delete($id){
+        // Check the manager level
+        if(!$this->request->manager->isLevel2()){
+            return response()->json([
+                'error' => 'Você não tem permissões suficientes para excluir um grupo.'
+            ], 401);
+        }
+
+        $this->group->find($id)->delete();
+        
+        return response()->json([
+            'success' => 'Você excluiu o grupo.'
+        ], 202);
+    }
+
     public function get(){
         return response()->json([
             'data' => Group::paginate(10)

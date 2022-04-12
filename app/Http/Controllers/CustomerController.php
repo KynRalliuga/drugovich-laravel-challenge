@@ -39,6 +39,13 @@ class CustomerController extends Controller
     }
 
     public function update($id){
+        // Check the manager level
+        if(!$this->request->manager->isLevel2()){
+            return response()->json([
+                'error' => 'Você não tem permissões suficientes para editar um cliente.'
+            ], 401);
+        }
+
         $validator = Validator::make($this->request->all(), [
             'group_id' => 'required',
             'cnpj' => 'required|size:14',
@@ -60,6 +67,14 @@ class CustomerController extends Controller
         ], 202);
     }
 
+    public function delete($id){
+        $this->customer->find($id)->delete();
+        
+        return response()->json([
+            'success' => 'Você excluiu o cliente.'
+        ], 202);
+    }
+
     public function get(){
         return response()->json([
             'data' => Customer::with('group')->paginate(10)
@@ -69,6 +84,13 @@ class CustomerController extends Controller
     public function getById($id){
         return response()->json([
             'data' => Customer::with('group')->find($id)
+        ], 200);
+    }
+
+    public function getByGroup($id){
+        $customer = new Customer;
+        return response()->json([
+            'data' => $customer->getByGroup($id)->with('group')->paginate(10)
         ], 200);
     }
 }

@@ -53,4 +53,8 @@ class Customer extends Model
         }
         $customer->save();
     }
+
+    public function getByGroup($id){
+        return $this->where('group_id', $id);
+    }
 }
