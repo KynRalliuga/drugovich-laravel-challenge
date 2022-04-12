@@ -61,6 +61,7 @@ class ManagerController extends Controller
             'password'  => 'required'
         ]);
 
+        // Validates the required fields
         if ($validator->fails()){
             return response()->json([
                 'error' => $validator->messages()

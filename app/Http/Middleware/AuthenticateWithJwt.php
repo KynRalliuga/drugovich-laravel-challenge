@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Exception;
-use App\Model\Manager;
+use App\Models\Manager;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\ExpiredException;
@@ -26,17 +26,25 @@ class AuthenticateWithJwt
         } catch(ExpiredException $e) {
             return response()->json([
                 'error' => 'Token informado esta expirado.'
-            ], 400);
+            ], 401);
         } catch(Exception $e) {
             return response()->json([
                 'error' => 'Um erro ocorreu ao decodificar o token.'
-            ], 400);
+            ], 401);
         }
 
-        $manager = new Manager->findByToken($credentials->sub);
+        $manager = new Manager;
+        $manager = $manager->findByToken($token);
+
+        if(!$manager){
+          return response()->json([
+              'error' => 'Não foi possível autenticar o seu token.'
+          ], 401);
+        }
 
         // Now let's put the manager in the request class so that you can grab it from there
-        $request->auth = $manager;
+        $request->decodedToken = $credentials;
+        $request->manager = $manager;
 
         return $next($request);
     }
