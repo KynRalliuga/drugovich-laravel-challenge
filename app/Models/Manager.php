@@ -27,7 +27,7 @@ class Manager extends Model {
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'password', 'token_jwt'
     ];
 
     /**

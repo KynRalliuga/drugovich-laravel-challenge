@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +23,14 @@ Route::prefix('manager')->group(function () {
     });
 });
 
-Route::middleware(['auth.jwt'])->prefix('group')->group(function () {
-    Route::controller(GroupController::class)->group(function () {
+Route::middleware(['auth.jwt'])->group(function () {
+    Route::prefix('group')->controller(GroupController::class)->group(function () {
+        Route::get('/', 'get');
+        Route::post('/', 'store');
+        Route::put('/{id}', 'update');
+    });
+
+    Route::prefix('customer')->controller(CustomerController::class)->group(function () {
         Route::get('/', 'get');
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
